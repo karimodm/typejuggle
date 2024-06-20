@@ -28,6 +28,9 @@ func assignRecursive(srcVal reflect.Value, destVal reflect.Value, convert ...boo
 	} else if srcVal.Kind() == reflect.Slice {
 		assignSliceFields(srcVal, destVal, convert...)
 	} else {
+		if srcVal.IsNil() {
+			return
+		}
 		if srcVal.Type().AssignableTo(destVal.Type()) {
 			destVal.Set(srcVal)
 		} else if len(convert) > 0 && convert[0] { // WARNING: this can overflow integers
